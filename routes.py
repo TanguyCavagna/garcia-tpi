@@ -13,8 +13,12 @@ main_bp = Blueprint('main_bp', __name__,
 def home():
     """Affiche l'index
     """
-    return render_template('index.html',
-                           current_user=current_user)
+    if current_user.is_authenticated:
+        return render_template('index.html',
+                            users=UserController().get_all(),
+                            current_user=current_user)
+    else:
+        return redirect(url_for('auth_bp.login'))
 
 @main_bp.route('/setup/sqlite', methods=['GET'])
 def setup():

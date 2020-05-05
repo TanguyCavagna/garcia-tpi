@@ -108,3 +108,18 @@ class UserController:
             return User(user_dict['idUser'], user_dict['lastnameUser'], user_dict['firstnameUser'], user_dict['emailUser'], user_dict['phoneUser'], RoleController().get_by_id(user_dict['idRole']))
         else:
             return None
+
+    def get_all(self) -> [User]:
+        """Retourne la liste de tous les utilisateur
+
+            Returns:
+                [User] -- Liste des utilisateurs
+        """
+        try:
+            sql_select = "SELECT * FROM user"
+
+            rows = SqliteController().execute(sql_select, fetch_mode=SqliteController.FETCH_ALL)
+
+            return [User(r['idUser'], r['lastnameUser'], r['firstnameUser'], r['emailUser'], r['phoneUser'], RoleController().get_by_id(r['idRole'])) for r in rows]
+        except Exception as e:
+            raise e

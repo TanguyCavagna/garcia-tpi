@@ -3,5 +3,34 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-awpiubawdiug {{ current_user.is_authenticated }}
+<div class="container-center">
+    <table class="table w-75 mt-5">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Téléphone</th>
+                {% if current_user.role.name == "Admin" %}
+                    <th scope="col">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    {% if current_user.role.name == "Admin" %}
+                        <td>Modifier</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
