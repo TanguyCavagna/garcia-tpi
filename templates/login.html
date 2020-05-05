@@ -17,27 +17,29 @@
             <h3>Connexion</h3>
             
             <form action="/login" method="post">
-                <fieldset>
-                    {{ form.email(placeholder='Email') }}
+                <div class="form-group">
+                    <label for="{{ form.email.id }}">Adresse email</label>
+                    {{ form.email(placeholder='Email', class_="form-control") }}
                     {% if form.email.errors %}
                         <ul>
                             {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
                         </ul>
                     {% endif %}
-                </fieldset>
+                </div>
 
-                <fieldset>
-                    {{ form.password(placeholder='Mot de passe') }}
+                <div class="form-group">
+                    <label for="{{ form.password.id }}">Mot de passe</label>
+                    {{ form.password(placeholder='Mot de passe', class_="form-control") }}
                     {% if form.password.errors %}
                         <ul>
                             {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
                         </ul>
                     {% endif %}
-                </fieldset>
+                </div>
                 
                 <div class="submit">
-                    <button type="submit">Connexion</button>
-                    <span>Pas encore inscris ? <a href="/register">Créer un compte</a></span>
+                    <button type="submit" class="btn btn-primary">Connexion</button>
+                    <span>Pas encore inscris ? <a href="{{ url_for('auth_bp.signup') }}">Créer un compte</a></span>
                 </div>
             </form>
         </div>
