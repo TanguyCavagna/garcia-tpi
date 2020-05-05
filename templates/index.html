@@ -12,9 +12,7 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Email</th>
                 <th scope="col">Téléphone</th>
-                {% if current_user.role.name == "Admin" %}
-                    <th scope="col">Actions</th>
-                {% endif %}
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,14 +23,16 @@
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone }}</td>
-                    {% if current_user.role.name == "Admin" %}
-                        <td style="display: flex; justify-content: space-around; align-items: center;" data-user-id="{{ user.id }}">
+                    <td style="display: flex; justify-content: space-around; align-items: center;" data-user-id="{{ user.id }}">
+                        {% if current_user.role.name == "Admin" or current_user.id == user.id %}
                             <button class="btn btn-primary edit" data-toggle="modal" data-target="#edit-modal">Modifer</button>
-                            {% if user.email != current_user.email %}
-                                <button class="btn btn-danger delete">Supprimer</button>
-                            {% endif %}
-                        </td>
-                    {% endif %}
+                            <button class="btn btn-danger delete">Supprimer</button>
+                        {% else %}
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#c3c3c3" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm9 12c0 1.94-.624 3.735-1.672 5.207l-12.535-12.535c1.472-1.048 3.267-1.672 5.207-1.672 4.962 0 9 4.038 9 9zm-18 0c0-1.94.624-3.735 1.672-5.207l12.534 12.534c-1.471 1.049-3.266 1.673-5.206 1.673-4.962 0-9-4.038-9-9z"/></svg>
+                            </span>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

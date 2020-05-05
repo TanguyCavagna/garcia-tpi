@@ -45,7 +45,7 @@ def set_user():
     first_name = request.json.get('firstnameUser')
     phone = request.json.get('phoneUser')
 
-    if current_user.role.name == 'Admin':
+    if current_user.role.name == 'Admin' or current_user.id == id:
         return jsonify({'User' : UserController().set_by_id(id, email, last_name, first_name, phone)})
     else:
         abort(403)
@@ -53,7 +53,7 @@ def set_user():
 @main_bp.route('/delete/user', methods=['DELETE'])
 @login_required
 def delete_user():
-    if current_user.role.name == 'Admin' and current_user.id != request.json.get('idUser'):
+    if not (int(request.json.get('idUser')) == int(current_user.id) and current_user.role.name == "Admin"):
         return jsonify({'Status' : UserController().delete_by_id(request.json.get('idUser'))})
     else:
         abort(403)
