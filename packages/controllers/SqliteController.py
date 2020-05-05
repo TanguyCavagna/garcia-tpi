@@ -3,7 +3,7 @@
 @author: Tanguy Cavagna
 @copyright: Copyright 2020, TPI
 @version: 1.1.0
-@date: ????-??-??
+@date: 2020-05-05
 """
 import sqlite3, pathlib, sys, os, itertools
 from datetime import datetime

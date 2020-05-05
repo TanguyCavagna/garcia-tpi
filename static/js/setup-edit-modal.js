@@ -1,3 +1,12 @@
+/**
+ * Contient les requetes permettant la modification et la suppression des utilisateur
+ * 
+ * @author: Tanguy Cavagna
+ * @copyright: Copyright 2020, TPI
+ * @version: 1.0.0
+ * @date: 2020-05-05
+ */
+
 let edit_buttons = document.querySelectorAll('.edit');
 let delete_buttons = document.querySelectorAll('.delete');
 let update_button = document.querySelector('#update-user');
@@ -13,7 +22,7 @@ edit_buttons.forEach(btn => {
         let idUser = btn.parentElement.dataset.userId;
         
         fetch('/get/user', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -64,7 +73,7 @@ delete_buttons.forEach(btn => {
 
 update_button.addEventListener('click', () => {   
     fetch('/set/user', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

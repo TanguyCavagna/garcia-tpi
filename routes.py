@@ -1,6 +1,6 @@
 from flask import *
 from flask import current_app as app
-from flask_login import current_user, login_required, logout_user
+from flask_login import current_user, login_required
 from .packages.controllers.SqliteController import SqliteController
 from .packages.controllers.UserController import UserController
 
@@ -32,10 +32,12 @@ def test():
     return jsonify({'Status' : UserController().insert()})
 
 @main_bp.route('/get/user', methods=['POST'])
+@login_required
 def get_user():
     return jsonify({'User' : UserController().get_by_id(request.json.get('idUser')).serialize()})
 
-@main_bp.route('/set/user', methods=['PUT'])
+@main_bp.route('/set/user', methods=['PATCH'])
+@login_required
 def set_user():
     id = request.json.get('idUser')
     email = request.json.get('emailUser')
@@ -43,8 +45,15 @@ def set_user():
     first_name = request.json.get('firstnameUser')
     phone = request.json.get('phoneUser')
 
-    return jsonify({'User' : UserController().set_by_id(id, email, last_name, first_name, phone)})
+    if current_user.role.name == 'Admin':
+        return jsonify({'User' : UserController().set_by_id(id, email, last_name, first_name, phone)})
+    else:
+        abort(403)
 
 @main_bp.route('/delete/user', methods=['DELETE'])
+@login_required
 def delete_user():
-    return jsonify({'Status' : UserController().delete_by_id(request.json.get('idUser'))})
+    if current_user.role.name == 'Admin' and current_user.id != request.json.get('idUser'):
+        return jsonify({'Status' : UserController().delete_by_id(request.json.get('idUser'))})
+    else:
+        abort(403)
