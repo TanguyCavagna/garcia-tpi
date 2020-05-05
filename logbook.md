@@ -9,3 +9,5 @@
 ![modèle](static/img/model.png)
 
 - Mise en place des création de formulaires automatique pour la connexion et l'inscription. Ces formulaires sont fait avec la librairie wtforms
+- Mise en place de bootstrap 4
+- Ajout de la barre de navigation du site
