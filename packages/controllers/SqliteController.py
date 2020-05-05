@@ -5,7 +5,6 @@
 @version: 1.1.0
 @date: ????-??-??
 """
-from .DatabaseController import DatabaseController
 import sqlite3, pathlib, sys, os, itertools
 from datetime import datetime
 from os import path, getcwd
@@ -92,22 +91,38 @@ class SqliteController:
 
     # Données de la base de données
 
-    def setup_anime_table(self):
+    def setup_user_table(self):
+        """Créer la table user si elle n'existe pas encore
+        """
         try:
             self.execute(
                 """
-                    CREATE TABLE IF NOT EXISTS `anime` (
-                        `idAnime` integer NOT NULL PRIMARY KEY,
-                        `title` text NOT NULL,
-                        `type` integer NOT NULL,
-                        `episodes` integer NOT NULL,
-                        `status` integer NOT NULL,
-                        `picture` text NOT NULL,
-                        `thumbnail` text NOT NULL,
-                        `synonyms` text DEFAULT NULL,
-                        `modificationDate` timestamp DEFAULT NULL,
-                        FOREIGN KEY (`type`) REFERENCES `type`(`idType`),
-                        FOREIGN KEY (`status`) REFERENCES `status`(`idStatus`)
+                    CREATE TABLE IF NOT EXISTS `user` (
+                        `idUser` integer NOT NULL PRIMARY KEY,
+                        `lastnameUser` text NOT NULL,
+                        `firstnameUser` text NOT NULL,
+                        `emailUser` text NOT NULL,
+                        `passwordUser` text NOT NULL,
+                        `phoneUser` text NOT NULL,
+                        `lastConnectDate` timestamp DEFAULT NULL,
+                        `idRole` integer NOT NULL REFERENCES `role`(`idRole`)
+                    )
+                """,
+                None
+            )
+            return True
+        except Exception as e:
+            return str(e)
+
+    def setup_role_table(self):
+        """Créer la table role si elle n'existe pas encore
+        """
+        try:
+            self.execute(
+                """
+                    CREATE TABLE IF NOT EXISTS `role` (
+                        `idRole` integer NOT NULL PRIMARY KEY,
+                        `nameRole` text NOT NULL
                     )
                 """,
                 None

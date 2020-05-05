@@ -1,9 +1,11 @@
 from flask import *
 from flask_login import LoginManager
+from .config import *
 
 login_manager = LoginManager()
 
 app = Flask(__name__)
+app.config.from_object(DevConfig())
 app.secret_key = "8185c8ac4656219f4aa5541915079f7b3743e1b5f48bacfcc3386af016b55320"
 login_manager.init_app(app)
 
