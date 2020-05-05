@@ -26,11 +26,63 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone }}</td>
                     {% if current_user.role.name == "Admin" %}
-                        <td>Modifier</td>
+                        <td style="display: flex; justify-content: space-around; align-items: center;" data-user-id="{{ user.id }}">
+                            <button class="btn btn-primary edit" data-toggle="modal" data-target="#edit-modal">Modifer</button>
+                            {% if user.email != current_user.email %}
+                                <button class="btn btn-danger delete">Supprimer</button>
+                            {% endif %}
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="edit-modal" data-user-id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Modification de l'utilisateur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col-6" id="email-edit">
+                        <label for="email">Adresse email</label>
+                        <input id="email" type="text" class="form-control" placeholder="Email">
+                    </div>
+                    
+                    <div class="form-group col-6" id="phone-edit">
+                        <label for="phone">Numéro de téléphone</label>
+                        <input id="phone" type="text" class="form-control" placeholder="Téléphone">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6" id="last-name-edit">
+                        <label for="last-name">Nom</label>
+                        <input id="last-name" type="text" class="form-control" placeholder="Nom">
+                    </div>
+
+                    <div class="form-group col-6" id="first-name-edit">
+                        <label for="first_name">Prénom</label>
+                        <input id="first_name" type="text" class="form-control" placeholder="Prénom">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="update-user" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/setup-edit-modal.js') }}"></script>
+{% endblock script %}

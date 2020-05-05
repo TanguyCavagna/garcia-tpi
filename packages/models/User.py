@@ -25,6 +25,5 @@ class User(UserMixin):
             'last_name': self.last_name,
             'first_name': self.first_name,
             'email': self.email,
-            'phone': self.phone,
-            'role': self.role.serialize()
+            'phone': self.phone
         }

@@ -30,3 +30,21 @@ def setup():
 @main_bp.route('/test', methods=['GET'])
 def test():
     return jsonify({'Status' : UserController().insert()})
+
+@main_bp.route('/get/user', methods=['POST'])
+def get_user():
+    return jsonify({'User' : UserController().get_by_id(request.json.get('idUser')).serialize()})
+
+@main_bp.route('/set/user', methods=['PUT'])
+def set_user():
+    id = request.json.get('idUser')
+    email = request.json.get('emailUser')
+    last_name = request.json.get('lastnameUser')
+    first_name = request.json.get('firstnameUser')
+    phone = request.json.get('phoneUser')
+
+    return jsonify({'User' : UserController().set_by_id(id, email, last_name, first_name, phone)})
+
+@main_bp.route('/delete/user', methods=['DELETE'])
+def delete_user():
+    return jsonify({'Status' : UserController().delete_by_id(request.json.get('idUser'))})
