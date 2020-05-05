@@ -11,3 +11,8 @@
 - Mise en place des création de formulaires automatique pour la connexion et l'inscription. Ces formulaires sont fait avec la librairie wtforms
 - Mise en place de bootstrap 4
 - Ajout de la barre de navigation du site
+- Mise en place de l'affichage des utilisateurs du carnet d'adresse sur la page d'accueil
+- Mise en place de la modification ainsi que la suppression des utilisateur du carnet d'adresse pour un utilsaiteur étant connecté en tant qu'administrateur
+- Création du diagramme d'activité pour la connexion et création de compte :
+
+![diagram](static/img/diagram.png)
