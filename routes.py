@@ -2,6 +2,7 @@ from flask import *
 from flask import current_app as app
 from flask_login import current_user, login_required, logout_user
 from .packages.controllers.SqliteController import SqliteController
+from .packages.controllers.UserController import UserController
 
 # Configuration du Blueprint
 main_bp = Blueprint('main_bp', __name__,
@@ -21,3 +22,7 @@ def setup():
     """
     setup = SqliteController().setup_user_table() and SqliteController().setup_role_table()
     return jsonify({'Status' : setup})
+
+@main_bp.route('/test', methods=['GET'])
+def test():
+    return jsonify({'Status' : UserController().insert()})

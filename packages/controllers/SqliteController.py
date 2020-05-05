@@ -127,6 +127,7 @@ class SqliteController:
                 """,
                 None
             )
+            self.execute_many("INSERT INTO `role`(nameRole) VALUES(?)", values=[('User',), ('Admin',)])
             return True
         except Exception as e:
             return str(e)
