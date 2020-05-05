@@ -1,5 +1,6 @@
 from flask import *
 from flask_login import LoginManager
+from .packages.controllers.UserController import UserController
 from .config import *
 
 login_manager = LoginManager()

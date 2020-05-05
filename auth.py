@@ -1,8 +1,9 @@
 from flask import redirect, render_template, flash, Blueprint, request, url_for
 from flask import current_app as app
-from flask_login import login_required, current_user, login_user
+from flask_login import login_required, current_user, login_user, logout_user
 from .packages.forms.LoginForm import LoginForm
 from .packages.forms.SignupForm import SignupForm
+from .packages.controllers.UserController import UserController
 import hashlib
 
 # Configuration du Blueprint
@@ -22,13 +23,14 @@ def signup():
     if request.method == 'POST':
         if signup_form.validate(): # Utilise les validators renseignés dans SignupForm pour vérifier les valeurs des champs
             email = signup_form.email.data
-            nickname = signup_form.nickname.data
+            last_name = signup_form.last_name.data
+            first_name = signup_form.first_name.data
+            phone = signup_form.phone.data
             password = signup_form.password.data
 
             if not UserController().exists(email):
                 hashed_password = hashlib.sha256(password.encode('utf8')).hexdigest()
-                user = UserController().insert(email, hashed_password, nickname)
-                UserController().setup_default_lists(user.id)
+                user = UserController().insert(email, hashed_password, last_name, first_name, phone)
                 login_user(user)
                 return redirect(url_for('main_bp.home'))
             flash('Un utlisateur utilise déjà cette adresse mail')
@@ -59,3 +61,11 @@ def login():
     return render_template('login.html',
                            current_user=current_user,
                            form=login_form)
+
+@auth_bp.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    """Déconnecte l'utilisateur"""
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
+

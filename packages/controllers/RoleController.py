@@ -54,3 +54,20 @@ class RoleController:
                 return row
         except Exception as e:
             raise e
+
+    def get_by_id(self, id: int) -> Role:
+        """Récupère le role par l'id
+
+            Returns:
+                Role -- Role trouvé
+        """
+        try:
+            sql_get_default = "SELECT `idRole`, `nameRole` FROM `role` WHERE `idRole` = ?"
+            row = SqliteController().execute(sql_get_default, values=(id,), fetch_mode=SqliteController().FETCH_ONE)
+
+            if row is not None:
+                return Role(row['idRole'], row['nameRole'])
+            else:
+                return row
+        except Exception as e:
+            raise e
