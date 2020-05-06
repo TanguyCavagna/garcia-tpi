@@ -89,6 +89,21 @@ class SqliteController:
         else:
             return result
 
+    def migrate(self):
+        """Migre les tables
+        """
+        queries = []
+
+        sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "packages/migrations"))
+        for file in glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "packages/migrations/*Table.py")):
+            name = os.path.splitext(os.path.basename(file))[0]
+            module = getattr(import_module(name), name)
+
+            queries.append(module.setup())
+
+        for query in sorted(queries, key=lambda k: k['pos']):
+            SqliteController().execute(query['query'])
+
     # Données de la base de données
 
     def setup_user_table(self):
