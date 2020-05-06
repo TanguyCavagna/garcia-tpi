@@ -27,8 +27,7 @@ def home():
 def setup():
     """Créer la base de données sqlite
     """
-    setup = SqliteController().setup_user_table() and SqliteController().setup_role_table()
-    return jsonify({'Status' : setup})
+    return jsonify({'Status' : SqliteController().migrate()})
 
 @main_bp.route('/get/user', methods=['POST'])
 @login_required

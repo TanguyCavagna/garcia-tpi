@@ -103,46 +103,6 @@ class SqliteController:
 
         for query in sorted(queries, key=lambda k: k['pos']):
             SqliteController().execute(query['query'])
-
-    # Données de la base de données
-
-    def setup_user_table(self):
-        """Créer la table user si elle n'existe pas encore
-        """
-        try:
-            self.execute(
-                """
-                    CREATE TABLE IF NOT EXISTS `user` (
-                        `idUser` integer NOT NULL PRIMARY KEY,
-                        `lastnameUser` text NOT NULL,
-                        `firstnameUser` text NOT NULL,
-                        `emailUser` text NOT NULL,
-                        `passwordUser` text NOT NULL,
-                        `phoneUser` text NOT NULL,
-                        `lastConnectDate` timestamp DEFAULT NULL,
-                        `idRole` integer NOT NULL REFERENCES `role`(`idRole`)
-                    )
-                """,
-                None
-            )
-            return True
-        except Exception as e:
-            return str(e)
-
-    def setup_role_table(self):
-        """Créer la table role si elle n'existe pas encore
-        """
-        try:
-            self.execute(
-                """
-                    CREATE TABLE IF NOT EXISTS `role` (
-                        `idRole` integer NOT NULL PRIMARY KEY,
-                        `nameRole` text NOT NULL
-                    )
-                """,
-                None
-            )
-            self.execute_many("INSERT INTO `role`(nameRole) VALUES(?)", values=[('User',), ('Admin',)])
-            return True
-        except Exception as e:
-            return str(e)
+        
+        return True
+        
