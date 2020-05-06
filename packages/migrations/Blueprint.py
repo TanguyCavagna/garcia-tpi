@@ -27,6 +27,12 @@ class Blueprint:
             'column': column_name
         }
 
+    def timestamp(self, column_name):
+        return {
+            'type': 'timestamp',
+            'column': column_name
+        }
+
     def foreign(self, column_name):
         return { 'foreign': column_name, **self.nullable(False) }
 

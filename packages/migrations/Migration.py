@@ -6,3 +6,6 @@ class Migration(ABC):
     @abstractmethod
     def setup(self):
         pass
+
+    def seed():
+        return None

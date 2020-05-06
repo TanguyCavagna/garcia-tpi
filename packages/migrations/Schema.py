@@ -38,3 +38,21 @@ class Schema:
         create_query = create_query[:-1] + ")"
 
         return { 'pos': position, 'query': create_query }
+
+    def insert(self, table_name, entries):
+        insert_query = f"INSERT INTO {table_name}("
+
+        for entry in entries:
+            for key, _ in entry.items():
+                insert_query += f'`{key}`,'
+            break
+
+        insert_query = insert_query[:-1] + ') VALUES'
+
+        for entry in entries:
+            insert_query += '('
+            for _, value in entry.items():
+                insert_query += f"'{value}',"
+            insert_query = insert_query[:-1] + '),'
+
+        return { 'query': insert_query[:-1] }

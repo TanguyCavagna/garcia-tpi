@@ -4,8 +4,6 @@ from flask_login import current_user, login_required
 from .packages.controllers.SqliteController import SqliteController
 from .packages.controllers.UserController import UserController
 import os, sys
-from glob import glob
-from importlib import import_module
 
 # Configuration du Blueprint
 main_bp = Blueprint('main_bp', __name__,
@@ -28,6 +26,12 @@ def setup():
     """Créer la base de données sqlite
     """
     return jsonify({'Status' : SqliteController().migrate()})
+
+@main_bp.route('/seed/sqlite', methods=['GET'])
+def seed():
+    """Seed la base de données
+    """
+    return jsonify({'Status' : SqliteController().seed()})
 
 @main_bp.route('/get/user', methods=['POST'])
 @login_required

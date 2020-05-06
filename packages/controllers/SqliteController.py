@@ -8,6 +8,8 @@
 import sqlite3, pathlib, sys, os, itertools
 from datetime import datetime
 from os import path, getcwd
+from glob import glob
+from importlib import import_module
 
 class SqliteController:
 
@@ -89,20 +91,40 @@ class SqliteController:
         else:
             return result
 
+    def __get_eloquents(self):
+        eloquents = []
+
+        sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../migrations"))
+        for file in glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../migrations/*Table.py")):
+            name = os.path.splitext(os.path.basename(file))[0]
+            eloquents.append(getattr(import_module(name), name))
+
+        return eloquents
+
     def migrate(self):
         """Migre les tables
         """
         queries = []
 
-        sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "packages/migrations"))
-        for file in glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "packages/migrations/*Table.py")):
-            name = os.path.splitext(os.path.basename(file))[0]
-            module = getattr(import_module(name), name)
-
+        for module in self.__get_eloquents():
             queries.append(module.setup())
 
         for query in sorted(queries, key=lambda k: k['pos']):
-            SqliteController().execute(query['query'])
+            self.execute(query['query'])
+        
+        return True
+
+    def seed(self):
+        """Seed les tables
+        """
+        queries = []
+
+        for module in self.__get_eloquents():
+            queries.append(module.seed())
+
+        for query in queries:
+            if query is not None:
+                self.execute(query['query'])
         
         return True
         
